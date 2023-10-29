@@ -12,9 +12,10 @@ func Reverse(s string) (result string) {
 	}
 	return
 }
-func Reverse_binary(s [32]byte) (result string) {
-	for _, v := range s {
-		result = string(v) + result
+func Reverse_binary(s []byte) (result [32]byte) {
+	result = [32]byte{}
+	for i, v := range s {
+		result[32-i-1] = v
 	}
 	return
 }
@@ -30,6 +31,9 @@ func Reverse_binary(s [32]byte) (result string) {
 func BE_TO_LE(num string) string {
 	num = Reverse(num)
 	res := []uint8{}
+	if len(num)%2 != 0 {
+		panic(num)
+	}
 	for i := 0; i < utf8.RuneCountInString(num); i += 2 {
 		res = append(res, num[i+1])
 		res = append(res, num[i])
@@ -40,7 +44,7 @@ func BE_TO_LE(num string) string {
 
 func zfill(s string) string {
 	for utf8.RuneCountInString(s) < 8 {
-		s += "0"
+		s = "0" + s
 	}
 	return s
 }
